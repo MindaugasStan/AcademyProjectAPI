@@ -11,5 +11,6 @@ namespace MouseTagProject
         public string? Summary { get; set; }
 
         public int MyProperty { get; set; }
+        public int df { get; set; }
     }
 }
