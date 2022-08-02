@@ -6,5 +6,6 @@
         public DateTime DateTime { get; set; }
         public bool WasContacted { get; set; }
         public int CandidateId { get; set; }
+        public int TestData { get; set; }
     }
 }
