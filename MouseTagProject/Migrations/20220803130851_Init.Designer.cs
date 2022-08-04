@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MouseTagProject.Context;
 
@@ -11,9 +12,10 @@ using MouseTagProject.Context;
 namespace MouseTagProject.Migrations
 {
     [DbContext(typeof(MouseTagProjectContext))]
-    partial class MouseTagProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20220803130851_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -247,9 +249,6 @@ namespace MouseTagProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("WillBeContacted")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
 
                     b.ToTable("Candidates");
@@ -288,12 +287,17 @@ namespace MouseTagProject.Migrations
                     b.Property<int?>("CandidateId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<int?>("CandidateId1")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CandidateId");
+
+                    b.HasIndex("CandidateId1");
 
                     b.ToTable("UserDates");
                 });
@@ -361,6 +365,10 @@ namespace MouseTagProject.Migrations
                     b.HasOne("MouseTagProject.Models.Candidate", null)
                         .WithMany("WhenWasContacted")
                         .HasForeignKey("CandidateId");
+
+                    b.HasOne("MouseTagProject.Models.Candidate", null)
+                        .WithMany("WillBeContacted")
+                        .HasForeignKey("CandidateId1");
                 });
 
             modelBuilder.Entity("MouseTagProject.Models.Candidate", b =>
@@ -368,6 +376,8 @@ namespace MouseTagProject.Migrations
                     b.Navigation("Technologies");
 
                     b.Navigation("WhenWasContacted");
+
+                    b.Navigation("WillBeContacted");
                 });
 #pragma warning restore 612, 618
         }

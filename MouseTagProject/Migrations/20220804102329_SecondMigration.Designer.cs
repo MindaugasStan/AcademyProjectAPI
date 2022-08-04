@@ -12,8 +12,8 @@ using MouseTagProject.Context;
 namespace MouseTagProject.Migrations
 {
     [DbContext(typeof(MouseTagProjectContext))]
-    [Migration("20220802080247_Init")]
-    partial class Init
+    [Migration("20220804102329_SecondMigration")]
+    partial class SecondMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -237,15 +237,9 @@ namespace MouseTagProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("Guid")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Linkedin")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MyProperty")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -254,6 +248,9 @@ namespace MouseTagProject.Migrations
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("WillBeContacted")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -268,7 +265,7 @@ namespace MouseTagProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CandidateId")
+                    b.Property<int?>("CandidateId")
                         .HasColumnType("int");
 
                     b.Property<string>("TechnologyName")
@@ -290,14 +287,11 @@ namespace MouseTagProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CandidateId")
+                    b.Property<int?>("CandidateId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("WasContacted")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -361,25 +355,21 @@ namespace MouseTagProject.Migrations
                 {
                     b.HasOne("MouseTagProject.Models.Candidate", null)
                         .WithMany("Technologies")
-                        .HasForeignKey("CandidateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CandidateId");
                 });
 
             modelBuilder.Entity("MouseTagProject.Models.UserDate", b =>
                 {
                     b.HasOne("MouseTagProject.Models.Candidate", null)
-                        .WithMany("Dates")
-                        .HasForeignKey("CandidateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("WhenWasContacted")
+                        .HasForeignKey("CandidateId");
                 });
 
             modelBuilder.Entity("MouseTagProject.Models.Candidate", b =>
                 {
-                    b.Navigation("Dates");
-
                     b.Navigation("Technologies");
+
+                    b.Navigation("WhenWasContacted");
                 });
 #pragma warning restore 612, 618
         }
