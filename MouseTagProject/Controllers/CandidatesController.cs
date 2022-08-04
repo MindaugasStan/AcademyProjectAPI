@@ -34,7 +34,7 @@ namespace MouseTagProject.Controllers
 
         [HttpPost]
         [Route("api/[controller]")]
-        public IActionResult AddCandidate(Candidate candidate)
+        public IActionResult AddCandidate([FromBody] Candidate candidate)
         {
             _candidate.AddCandidate(candidate);
             return Ok(candidate);
@@ -55,7 +55,7 @@ namespace MouseTagProject.Controllers
 
         [HttpPatch]
         [Route("api/[controller]/{id}")]
-        public IActionResult EditCandidate(int id, Candidate candidate)
+        public IActionResult EditCandidate(int id, [FromBody] Candidate candidate)
         {
             var existingCandidate = _candidate.GetCandidate(id);
             if (existingCandidate != null)

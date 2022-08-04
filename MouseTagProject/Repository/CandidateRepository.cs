@@ -1,19 +1,26 @@
-﻿using MouseTagProject.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using MouseTagProject.Context;
 using MouseTagProject.Models;
 using MouseTagProject.Repository.Interfaces;
 
 namespace MouseTagProject.Repository
 {
-    public class CandidateSql : ICandidate
+    public class CandidateRepository : ICandidate
     {
 
         private MouseTagProjectContext _candidateContext;
-        public CandidateSql(MouseTagProjectContext candidateContext)
+        public CandidateRepository(MouseTagProjectContext candidateContext)
         {
             _candidateContext = candidateContext;
         }
         public void AddCandidate(Candidate candidate)
         {
+            var technologyId = candidate.Technologies[0].Id;
+            var technology = _candidateContext.Technologies.Where(x => x.Id == technologyId).FirstOrDefault();
+            if (technology != null)
+            {
+                candidate.Technologies[0] = technology;
+            }
             _candidateContext.Candidates.Add(candidate);
             _candidateContext.SaveChanges();
         }
@@ -26,12 +33,12 @@ namespace MouseTagProject.Repository
 
         public Candidate GetCandidate(int id)
         {
-            return _candidateContext.Candidates.Where(x => x.Id == id).FirstOrDefault();
+            return _candidateContext.Candidates.Where(x => x.Id == id).Include(x => x.WhenWasContacted).Include(x => x.Technologies).FirstOrDefault();
         }
 
         public List<Candidate> GetCandidates()
         {
-           return _candidateContext.Candidates.ToList();
+            return _candidateContext.Candidates.Include(x => x.WhenWasContacted).Include(x => x.Technologies).ToList();
         }
 
         public Candidate UpdateCandidate(Candidate candidate)
