@@ -13,6 +13,6 @@ namespace MouseTagProject.Models
         public string Comment { get; set; }
         public bool Available { get; set; }
         public List<Technology> Technologies { get; set; }
-        public List<UserDate> WillBeContacted { get; set; }
+        public DateTime WillBeContacted { get; set; }
     }
 }

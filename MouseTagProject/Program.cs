@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<ICandidate, CandidateSql>();
+builder.Services.AddScoped<ICandidate, CandidateRepository>();
 builder.Services.AddScoped<ITechnology, TechnologyRepository>();
 
 var Configuration = builder.Configuration;
