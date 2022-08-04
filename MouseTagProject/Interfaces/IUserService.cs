@@ -1,4 +1,5 @@
-﻿using MouseTagProject.DTOs;
+﻿using Microsoft.AspNetCore.Identity;
+using MouseTagProject.DTOs;
 
 namespace MouseTagProject.Interfaces
 {
@@ -6,5 +7,6 @@ namespace MouseTagProject.Interfaces
     {
         Task<UserResponseDto> RegisterUserAsync(UserRegisterDto user);
         Task<UserResponseDto> LoginUserAsync(UserLoginDto user);
+        Task<IdentityUser> GetUserProfile(string id);
     }
 }

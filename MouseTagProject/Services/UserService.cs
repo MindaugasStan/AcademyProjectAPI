@@ -64,43 +64,23 @@ namespace MouseTagProject.Services
                 };
             }
 
-
-            var tokenDescriptor = new SecurityTokenDescriptor
+            var claims = new[]
             {
-                Subject = ClaimsIdentity(new Claim[]
-                {
-                    new Claim("Id", identityUser.Id)
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(10),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtConfig:Key"])))
-            };
+                new Claim("Id", identityUser.Id),
+                new Claim("Email", identityUser.UserName),
+                new Claim(ClaimTypes.NameIdentifier, identityUser.Id)
+             };
 
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtConfig:Key"]));
 
-
-
-
-
-
-            /*
-                        var claims = new[]
-                        {
-                            new Claim("Id", identityUser.Email),
-                            new Claim(ClaimTypes.NameIdentifier, identityUser.Id)
-                        };
-
-                        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtConfig:Key"]));
-
-                        var token = new JwtSecurityToken(
-                            issuer: _config["JwtConfig:Issuer"],
-                            audience: _config["JwtConfig:Audience"],
-                            claims: claims,
-                            expires: DateTime.Now.AddDays(1),
-                            signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
-                            );
-                        var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-
-                        HttpContext.Response.Cookies.Append("token", tokenString);
-            */
+            var token = new JwtSecurityToken(
+                issuer: _config["JwtConfig:Issuer"],
+                audience: _config["JwtConfig:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
+                );
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
 
             return new UserResponseDto()
             {
@@ -108,6 +88,13 @@ namespace MouseTagProject.Services
                 IsSuccess = true,
                 ExpiredDate = token.ValidTo
             };
+        }
+
+        public async Task<IdentityUser> GetUserProfile(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            return user;
         }
     }
 }

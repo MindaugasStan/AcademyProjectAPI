@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MouseTagProject.DTOs;
@@ -43,14 +42,17 @@ namespace MouseTagProject.Controllers
         }
 
 
-        [HttpGet, Authorize(AuthenticationSchemes = "Bearer")]
-        public IActionResult Aaaaas()
+        [HttpGet("usr"), Authorize(AuthenticationSchemes = "Bearer")]
+        // [HttpGet("usr"), Authorize]
+        public async Task<IActionResult> UserProfile()
         {
+            var userId = User.Claims.FirstOrDefault(u => u.Type == "Id").Value;
 
-            //    var ss = User.FindFirst(ClaimTypes.NameIdentifier);
-            //     var asss = HttpContext.GetTokenAsync("access_token").Result;
+            var user = await _userService.GetUserProfile(userId);
 
-            return Ok();
+            return Ok(user);
         }
+
+
     }
 }
