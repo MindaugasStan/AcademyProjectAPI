@@ -56,11 +56,9 @@ namespace MouseTagProject.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MyProperty = table.Column<int>(type: "int", nullable: false),
                     Linkedin = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Available = table.Column<bool>(type: "bit", nullable: false),
-                    Guid = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    Available = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -180,7 +178,7 @@ namespace MouseTagProject.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TechnologyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CandidateId = table.Column<int>(type: "int", nullable: false)
+                    CandidateId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -189,8 +187,7 @@ namespace MouseTagProject.Migrations
                         name: "FK_Technologies_Candidates_CandidateId",
                         column: x => x.CandidateId,
                         principalTable: "Candidates",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -200,8 +197,8 @@ namespace MouseTagProject.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    WasContacted = table.Column<bool>(type: "bit", nullable: false),
-                    CandidateId = table.Column<int>(type: "int", nullable: false)
+                    CandidateId = table.Column<int>(type: "int", nullable: true),
+                    CandidateId1 = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -210,8 +207,12 @@ namespace MouseTagProject.Migrations
                         name: "FK_UserDates_Candidates_CandidateId",
                         column: x => x.CandidateId,
                         principalTable: "Candidates",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_UserDates_Candidates_CandidateId1",
+                        column: x => x.CandidateId1,
+                        principalTable: "Candidates",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -262,6 +263,11 @@ namespace MouseTagProject.Migrations
                 name: "IX_UserDates_CandidateId",
                 table: "UserDates",
                 column: "CandidateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserDates_CandidateId1",
+                table: "UserDates",
+                column: "CandidateId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

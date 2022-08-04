@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MouseTagProject.Context;
+using MouseTagProject.Repository;
+using MouseTagProject.Repository.Interfaces;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<ICandidate, CandidateSql>();
+builder.Services.AddScoped<ITechnology, TechnologyRepository>();
 
 var Configuration = builder.Configuration;
 

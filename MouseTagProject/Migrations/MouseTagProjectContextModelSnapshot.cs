@@ -235,15 +235,9 @@ namespace MouseTagProject.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("Guid")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Linkedin")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("MyProperty")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -266,7 +260,7 @@ namespace MouseTagProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CandidateId")
+                    b.Property<int?>("CandidateId")
                         .HasColumnType("int");
 
                     b.Property<string>("TechnologyName")
@@ -288,18 +282,20 @@ namespace MouseTagProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CandidateId")
+                    b.Property<int?>("CandidateId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CandidateId1")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("WasContacted")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CandidateId");
+
+                    b.HasIndex("CandidateId1");
 
                     b.ToTable("UserDates");
                 });
@@ -359,25 +355,27 @@ namespace MouseTagProject.Migrations
                 {
                     b.HasOne("MouseTagProject.Models.Candidate", null)
                         .WithMany("Technologies")
-                        .HasForeignKey("CandidateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CandidateId");
                 });
 
             modelBuilder.Entity("MouseTagProject.Models.UserDate", b =>
                 {
                     b.HasOne("MouseTagProject.Models.Candidate", null)
-                        .WithMany("Dates")
-                        .HasForeignKey("CandidateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("WhenWasContacted")
+                        .HasForeignKey("CandidateId");
+
+                    b.HasOne("MouseTagProject.Models.Candidate", null)
+                        .WithMany("WillBeContacted")
+                        .HasForeignKey("CandidateId1");
                 });
 
             modelBuilder.Entity("MouseTagProject.Models.Candidate", b =>
                 {
-                    b.Navigation("Dates");
-
                     b.Navigation("Technologies");
+
+                    b.Navigation("WhenWasContacted");
+
+                    b.Navigation("WillBeContacted");
                 });
 #pragma warning restore 612, 618
         }

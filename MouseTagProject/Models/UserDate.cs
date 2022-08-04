@@ -4,7 +4,5 @@
     {
         public int Id { get; set; }
         public DateTime DateTime { get; set; }
-        public bool WasContacted { get; set; }
-        public int CandidateId { get; set; }
     }
 }
