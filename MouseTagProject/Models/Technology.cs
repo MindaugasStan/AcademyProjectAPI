@@ -4,6 +4,5 @@
     {
         public int Id { get; set; }
         public string TechnologyName { get; set; }
-        public List<Candidate> Candidates { get; set; }
     }
 }

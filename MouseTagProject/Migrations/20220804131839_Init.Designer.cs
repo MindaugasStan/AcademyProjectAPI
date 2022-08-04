@@ -12,8 +12,8 @@ using MouseTagProject.Context;
 namespace MouseTagProject.Migrations
 {
     [DbContext(typeof(MouseTagProjectContext))]
-    [Migration("20220804074446_ThirdInit")]
-    partial class ThirdInit
+    [Migration("20220804131839_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,36 +23,6 @@ namespace MouseTagProject.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("CandidateTechnology", b =>
-                {
-                    b.Property<int>("CandidatesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TechnologiesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CandidatesId", "TechnologiesId");
-
-                    b.HasIndex("TechnologiesId");
-
-                    b.ToTable("CandidateTechnology");
-                });
-
-            modelBuilder.Entity("CandidateUserDate", b =>
-                {
-                    b.Property<int>("CandidatesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WhenWasContactedId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CandidatesId", "WhenWasContactedId");
-
-                    b.HasIndex("WhenWasContactedId");
-
-                    b.ToTable("CandidateUserDate");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -295,11 +265,16 @@ namespace MouseTagProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("CandidateId")
+                        .HasColumnType("int");
+
                     b.Property<string>("TechnologyName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CandidateId");
 
                     b.ToTable("Technologies");
                 });
@@ -312,42 +287,17 @@ namespace MouseTagProject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<int?>("CandidateId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CandidateId");
+
                     b.ToTable("UserDates");
-                });
-
-            modelBuilder.Entity("CandidateTechnology", b =>
-                {
-                    b.HasOne("MouseTagProject.Models.Candidate", null)
-                        .WithMany()
-                        .HasForeignKey("CandidatesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MouseTagProject.Models.Technology", null)
-                        .WithMany()
-                        .HasForeignKey("TechnologiesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CandidateUserDate", b =>
-                {
-                    b.HasOne("MouseTagProject.Models.Candidate", null)
-                        .WithMany()
-                        .HasForeignKey("CandidatesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MouseTagProject.Models.UserDate", null)
-                        .WithMany()
-                        .HasForeignKey("WhenWasContactedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -399,6 +349,27 @@ namespace MouseTagProject.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MouseTagProject.Models.Technology", b =>
+                {
+                    b.HasOne("MouseTagProject.Models.Candidate", null)
+                        .WithMany("Technologies")
+                        .HasForeignKey("CandidateId");
+                });
+
+            modelBuilder.Entity("MouseTagProject.Models.UserDate", b =>
+                {
+                    b.HasOne("MouseTagProject.Models.Candidate", null)
+                        .WithMany("WhenWasContacted")
+                        .HasForeignKey("CandidateId");
+                });
+
+            modelBuilder.Entity("MouseTagProject.Models.Candidate", b =>
+                {
+                    b.Navigation("Technologies");
+
+                    b.Navigation("WhenWasContacted");
                 });
 #pragma warning restore 612, 618
         }
