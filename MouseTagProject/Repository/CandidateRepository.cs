@@ -15,6 +15,12 @@ namespace MouseTagProject.Repository
         }
         public void AddCandidate(Candidate candidate)
         {
+            var technologyId = candidate.Technologies[0].Id;
+            var technology = _candidateContext.Technologies.Where(x => x.Id == technologyId).FirstOrDefault();
+            if (technology != null)
+            {
+                candidate.Technologies[0] = technology;
+            }
             _candidateContext.Candidates.Add(candidate);
             _candidateContext.SaveChanges();
         }
@@ -27,7 +33,7 @@ namespace MouseTagProject.Repository
 
         public Candidate GetCandidate(int id)
         {
-            return _candidateContext.Candidates.Where(x => x.Id == id).FirstOrDefault();
+            return _candidateContext.Candidates.Where(x => x.Id == id).Include(x => x.WhenWasContacted).Include(x => x.Technologies).FirstOrDefault();
         }
 
         public List<Candidate> GetCandidates()
