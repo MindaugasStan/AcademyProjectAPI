@@ -100,6 +100,20 @@ namespace MouseTagProject.Services
             };
         }
 
+        public async Task<bool> RemoveUserAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            var userRemoved = await _userManager.DeleteAsync(user);
+
+            if (userRemoved.Succeeded)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public async Task<IdentityUser> GetUserProfile(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
