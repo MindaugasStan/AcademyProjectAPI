@@ -17,6 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddScoped<ICandidate, CandidateRepository>();
 builder.Services.AddScoped<ITechnology, TechnologyRepository>();
+builder.Services.AddCors();
+
 
 var Configuration = builder.Configuration;
 
@@ -62,6 +64,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(x => x.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true)); //allow any origin
 
 app.UseHttpsRedirection();
 
