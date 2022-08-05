@@ -4,11 +4,9 @@ namespace MouseTagProject.DTOs
 {
     public class UserRegisterDto
     {
-        [Required, EmailAddress]
+        [EmailAddress]
         public string Email { get; set; }
-        [Required]
         public string Password { get; set; }
-        [Compare("Password")]
-        public string ConfirmePassword { get; set; }
+        public string ConfirmPassword { get; set; }
     }
 }
