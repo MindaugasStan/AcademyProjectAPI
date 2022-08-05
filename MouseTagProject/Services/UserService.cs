@@ -11,6 +11,7 @@ namespace MouseTagProject.Services
     public class UserService : IUserService
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _config;
 
         public UserService(UserManager<IdentityUser> userManager, IConfiguration config)
@@ -22,7 +23,14 @@ namespace MouseTagProject.Services
         public async Task<UserResponseDto> RegisterUserAsync(UserRegisterDto user)
         {
             var identityUser = new IdentityUser() { UserName = user.Email, Email = user.Email, };
+
+            await _roleManager.CreateAsync(new IdentityRole("Admin"));
+            await _roleManager.CreateAsync(new IdentityRole("User"));
+
             var result = await _userManager.CreateAsync(identityUser, user.Password);
+
+            await _userManager.AddToRoleAsync(identityUser, user.Role);
+
             if (result.Succeeded)
             {
                 return new UserResponseDto()
