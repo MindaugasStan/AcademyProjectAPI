@@ -41,6 +41,18 @@ namespace MouseTagProject.Controllers
             return BadRequest();
         }
 
+        [HttpPost("Remove/{email}")]
+        public async Task<IActionResult> RemoveUserAsync(string email)
+        {
+            var result = await _userService.RemoveUserAsync(email);
+            if (result)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest();
+        }
+
 
         [HttpGet("usr"), Authorize(AuthenticationSchemes = "Bearer")]
         // [HttpGet("usr"), Authorize]

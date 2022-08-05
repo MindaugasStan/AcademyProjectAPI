@@ -11,18 +11,28 @@ namespace MouseTagProject.Services
     public class UserService : IUserService
     {
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _config;
 
-        public UserService(UserManager<IdentityUser> userManager, IConfiguration config)
+        public UserService(UserManager<IdentityUser> userManager, IConfiguration config, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _config = config;
+            _roleManager = roleManager;
         }
 
         public async Task<UserResponseDto> RegisterUserAsync(UserRegisterDto user)
         {
-            var identityUser = new IdentityUser() { UserName = user.Email, Email = user.Email, };
+            var identityUser = new IdentityUser() { UserName = user.Email, Email = user.Email };
+
+            // await _roleManager.CreateAsync(new IdentityRole("Admin"));
+
+            // await _roleManager.CreateAsync(new IdentityRole("User"));
+
             var result = await _userManager.CreateAsync(identityUser, user.Password);
+
+            await _userManager.AddToRoleAsync(identityUser, user.Role);
+
             if (result.Succeeded)
             {
                 return new UserResponseDto()
@@ -88,6 +98,20 @@ namespace MouseTagProject.Services
                 IsSuccess = true,
                 ExpiredDate = token.ValidTo
             };
+        }
+
+        public async Task<bool> RemoveUserAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            var userRemoved = await _userManager.DeleteAsync(user);
+
+            if (userRemoved.Succeeded)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public async Task<IdentityUser> GetUserProfile(string id)
