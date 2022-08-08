@@ -55,15 +55,15 @@ namespace MouseTagProject.Controllers
         }
 
 
-        [HttpGet("usr"), Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
+        [HttpGet("usr"), Authorize(AuthenticationSchemes = "Bearer", Roles = "User")]
         // [HttpGet("usr"), Authorize]
         public async Task<IActionResult> UserProfile()
         {
-            // var userId = User.Claims.FirstOrDefault(u => u.Type == "Id").Value;
+            var userId = User.Claims.FirstOrDefault(u => u.Type == "Id").Value;
 
-            //  var user = await _userService.GetUserProfile(userId);
+            var user = await _userService.GetUserProfile(userId);
 
-            return Ok("veikia");
+            return Ok(user);
         }
 
 
