@@ -19,9 +19,9 @@ builder.Services.AddControllers();
 builder.Services.AddHostedService<MyBackgroundService>();
 //builder.Services.AddHostedService<MyHostedServise>();
 
-builder.Services.AddSingleton<ICandidate, CandidateRepository>();
-builder.Services.AddSingleton<ITechnology, TechnologyRepository>();
-builder.Services.AddSingleton<IEmailService, EmailService>();
+builder.Services.AddScoped<ICandidate, CandidateRepository>();
+builder.Services.AddScoped<ITechnology, TechnologyRepository>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddCors();
 
@@ -33,7 +33,7 @@ builder.Services.AddDbContext<MouseTagProjectContext>(options =>
 {
     options.UseSqlServer(connectionString);
 
-}, ServiceLifetime.Singleton);
+}/*, ServiceLifetime.Singleton*/);
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
