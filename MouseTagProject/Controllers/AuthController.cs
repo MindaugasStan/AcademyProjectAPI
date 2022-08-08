@@ -55,7 +55,7 @@ namespace MouseTagProject.Controllers
         }
 
 
-        [HttpGet("usr"), Authorize(AuthenticationSchemes = "Bearer", Roles = "User")]
+        [HttpGet("usr"), Authorize(Roles = "User")]
         // [HttpGet("usr"), Authorize]
         public async Task<IActionResult> UserProfile()
         {

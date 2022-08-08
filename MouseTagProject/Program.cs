@@ -18,7 +18,6 @@ builder.Services.AddControllers();
 
 builder.Services.AddHostedService<MyBackgroundService>();
 //builder.Services.AddHostedService<MyHostedServise>();
-
 builder.Services.AddScoped<ICandidate, CandidateRepository>();
 builder.Services.AddScoped<ITechnology, TechnologyRepository>();
 builder.Services.AddScoped<IEmailService, EmailService>();
@@ -32,8 +31,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<MouseTagProjectContext>(options =>
 {
     options.UseSqlServer(connectionString);
-
-}/*, ServiceLifetime.Singleton*/);
+});
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
@@ -43,7 +41,10 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     options.Password.RequiredLength = 4;
 }).AddEntityFrameworkStores<MouseTagProjectContext>().AddDefaultTokenProviders();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters()
     {
