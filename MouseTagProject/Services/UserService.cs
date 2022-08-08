@@ -2,7 +2,9 @@
 using Microsoft.IdentityModel.Tokens;
 using MouseTagProject.DTOs;
 using MouseTagProject.Interfaces;
+using System.Data;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
@@ -25,9 +27,8 @@ namespace MouseTagProject.Services
         {
             var identityUser = new IdentityUser() { UserName = user.Email, Email = user.Email };
 
-            // await _roleManager.CreateAsync(new IdentityRole("Admin"));
-
-            // await _roleManager.CreateAsync(new IdentityRole("User"));
+            //await _roleManager.CreateAsync(new IdentityRole("Admin"));
+            //await _roleManager.CreateAsync(new IdentityRole("User"));
 
             var result = await _userManager.CreateAsync(identityUser, user.Password);
 
@@ -74,12 +75,19 @@ namespace MouseTagProject.Services
                 };
             }
 
-            var claims = new[]
+            var userRoles = await _userManager.GetRolesAsync(identityUser);
+
+            List<Claim> claims = new List<Claim>
             {
                 new Claim("Id", identityUser.Id),
                 new Claim("Email", identityUser.UserName),
                 new Claim(ClaimTypes.NameIdentifier, identityUser.Id)
-             };
+            };
+
+            foreach (var role in userRoles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtConfig:Key"]));
 

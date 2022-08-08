@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MouseTagProject.DTOs;
 using MouseTagProject.Interfaces;
@@ -19,9 +20,9 @@ namespace MouseTagProject.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<IActionResult> Register(UserRegisterDto user)
+        public async Task<IActionResult> Register(UserRegisterDto userDto)
         {
-            var result = await _userService.RegisterUserAsync(user);
+            var result = await _userService.RegisterUserAsync(userDto);
             if (result.IsSuccess == true)
             {
                 return Ok(result);
@@ -54,7 +55,7 @@ namespace MouseTagProject.Controllers
         }
 
 
-        [HttpGet("usr"), Authorize(AuthenticationSchemes = "Bearer")]
+        [HttpGet("usr"), Authorize(AuthenticationSchemes = "Bearer", Roles = "User")]
         // [HttpGet("usr"), Authorize]
         public async Task<IActionResult> UserProfile()
         {
