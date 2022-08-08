@@ -9,14 +9,20 @@ using MouseTagProject.Repository;
 using MouseTagProject.Repository.Interfaces;
 using MouseTagProject.Services;
 using System.Text;
+using ToDoListProject.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-builder.Services.AddScoped<ICandidate, CandidateRepository>();
-builder.Services.AddScoped<ITechnology, TechnologyRepository>();
+
+builder.Services.AddHostedService<MyBackgroundService>();
+//builder.Services.AddHostedService<MyHostedServise>();
+
+builder.Services.AddSingleton<ICandidate, CandidateRepository>();
+builder.Services.AddSingleton<ITechnology, TechnologyRepository>();
+builder.Services.AddSingleton<IEmailService, EmailService>();
+
 builder.Services.AddCors();
 
 
@@ -26,7 +32,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<MouseTagProjectContext>(options =>
 {
     options.UseSqlServer(connectionString);
-});
+
+}, ServiceLifetime.Singleton);
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
