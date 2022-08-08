@@ -48,7 +48,7 @@ namespace MouseTagProject.Repository
         public CandidateListItemDto GetCandidate(int id)
         {
             var candidateModel = _candidateContext.Candidates.Where(x => x.Id == id).Include(x => x.WhenWasContacted).Include(x => x.Technologies).ThenInclude(x => x.Technology).FirstOrDefault();
-           if(candidateModel != null)
+            if (candidateModel != null)
             {
                 var candidateListItemDto = new CandidateListItemDto()
                 {
@@ -76,7 +76,7 @@ namespace MouseTagProject.Repository
         {
             var candidateModel = _candidateContext.Candidates.Include(x => x.WhenWasContacted).Include(x => x.Technologies).ThenInclude(x => x.Technology).ToList();
             var candidateDto = new List<CandidateListItemDto>();
-            foreach(var candidate in candidateModel)
+            foreach (var candidate in candidateModel)
             {
                 candidateDto.Add(new CandidateListItemDto()
                 {
@@ -98,13 +98,18 @@ namespace MouseTagProject.Repository
             return candidateDto;
         }
 
+        public List<Candidate> GetCandidatesReminder()
+        {
+            return _candidateContext.Candidates.Include(x => x.WhenWasContacted).ToList();
+        }
+
         public List<CandidateListItemDto> UpdateCandidate(int id, AddCandidateDto updatedCandidate)
         {
-            var candidateModel = _candidateContext.Candidates.Where(x => x.Id == id).Include(x => x.WhenWasContacted).Include(x => x.Technologies).ThenInclude(x => x.Technology).FirstOrDefault(); 
+            var candidateModel = _candidateContext.Candidates.Where(x => x.Id == id).Include(x => x.WhenWasContacted).Include(x => x.Technologies).ThenInclude(x => x.Technology).FirstOrDefault();
             candidateModel.Name = updatedCandidate.Name;
             candidateModel.WhenWasContacted = updatedCandidate.WhenWasContacted.Select(x => new UserDate()
             {
-                    Date = x.Date
+                Date = x.Date
             }).ToList();
             candidateModel.Surname = updatedCandidate.Surname;
             candidateModel.Linkedin = updatedCandidate.Linkedin;
@@ -112,7 +117,7 @@ namespace MouseTagProject.Repository
             candidateModel.Available = updatedCandidate.Available;
             candidateModel.Technologies = updatedCandidate.TechnologyIds.Select(x => new CandidateTechnology()
             {
-                    TechnologyId = x
+                TechnologyId = x
             }).ToList();
             candidateModel.WillBeContacted = updatedCandidate.WillBeContacted;
 

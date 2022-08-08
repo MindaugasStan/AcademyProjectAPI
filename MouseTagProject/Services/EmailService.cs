@@ -59,7 +59,7 @@ namespace ToDoListProject.Services
             return true;
         }
 
-        public string GenerateLetter(List<CandidateListItemDto> candidates)
+        public string GenerateLetter(List<Candidate> candidates)
         {
             string table = File.ReadAllText("Templates/EmailTemplate.html");
             string line = "";

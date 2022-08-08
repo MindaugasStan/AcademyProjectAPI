@@ -6,11 +6,12 @@ namespace MouseTagProject.Repository.Interfaces
     {
         List<CandidateListItemDto> GetCandidates();
 
+        List<Candidate> GetCandidatesReminder();
         CandidateListItemDto GetCandidate(int id);
 
         void AddCandidate(AddCandidateDto candidate);
 
-        List<CandidateListItemDto> UpdateCandidate(int id,AddCandidateDto candidate);
+        List<CandidateListItemDto> UpdateCandidate(int id, AddCandidateDto candidate);
 
         void DeleteCandidate(int id);
 
