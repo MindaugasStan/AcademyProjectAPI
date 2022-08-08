@@ -12,7 +12,7 @@ using MouseTagProject.Context;
 namespace MouseTagProject.Migrations
 {
     [DbContext(typeof(MouseTagProjectContext))]
-    [Migration("20220804131839_Init")]
+    [Migration("20220806203622_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
