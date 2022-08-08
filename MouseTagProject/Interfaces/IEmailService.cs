@@ -4,7 +4,7 @@ namespace MouseTagProject.Interfaces
 {
     public interface IEmailService
     {
-        string GenerateLetter(List<Candidate> candidates);
+        string GenerateLetter(List<CandidateListItemDto> candidates);
         bool SendEmail(string letterHTML);
     }
 }

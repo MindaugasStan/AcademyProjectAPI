@@ -34,7 +34,7 @@ namespace MouseTagProject.Controllers
 
         [HttpPost]
         [Route("api/[controller]")]
-        public IActionResult AddTechnology(Technology technology)
+        public IActionResult AddTechnology(TechnologyDto technology)
         {
             _technology.AddTechnology(technology);
             return Ok(technology);
@@ -47,7 +47,7 @@ namespace MouseTagProject.Controllers
             var technology = _technology.GetTechnology(id);
             if (technology != null)
             {
-                _technology.DeleteTechnology(technology);
+                _technology.DeleteTechnology(id);
                 return Ok();
             }
             return NotFound();
@@ -55,12 +55,12 @@ namespace MouseTagProject.Controllers
 
         [HttpPatch]
         [Route("api/[controller]/{id}")]
-        public IActionResult EditTechnology(int id, Technology technology)
+        public IActionResult EditTechnology(int id, TechnologyDto technology)
         {
             var existingTechnology = _technology.GetTechnology(id);
             if (existingTechnology != null)
             {
-                var newTechnology = _technology.UpdateTechnology(technology);
+                var newTechnology = _technology.UpdateTechnology(id, technology);
                 return Ok(newTechnology);
             }
             return NotFound();

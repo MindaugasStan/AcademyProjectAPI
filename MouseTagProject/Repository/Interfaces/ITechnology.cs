@@ -4,11 +4,11 @@ namespace MouseTagProject.Repository.Interfaces
 {
     public interface ITechnology
     {
-        List<Technology> GetTechnologies();
+        List<TechnologyDto> GetTechnologies();
 
-        Technology GetTechnology(int id);
-        void AddTechnology(Technology technology);
-        Technology UpdateTechnology(Technology technology);
-        void DeleteTechnology(Technology technology);
+        TechnologyDto GetTechnology(int id);
+        void AddTechnology(TechnologyDto technology);
+        List<TechnologyDto> UpdateTechnology(int id, TechnologyDto technology);
+        void DeleteTechnology(int id);
     }
 }

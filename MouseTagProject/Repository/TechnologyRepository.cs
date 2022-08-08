@@ -13,37 +13,66 @@ namespace MouseTagProject.Repository
             _technologyContext = technologyContext;
         }
 
-        public void AddTechnology(Technology technology)
+        public void AddTechnology(TechnologyDto technology)
         {
-            _technologyContext.Technologies.Add(technology);
+            var technologyModel = new Technology()
+            {
+                Id = technology.Id,
+                TechnologyName = technology.TechnologyName
+            };
+            _technologyContext.Technologies.Add(technologyModel);
             _technologyContext.SaveChanges();
         }
 
-        public void DeleteTechnology(Technology technology)
+        public void DeleteTechnology(int id)
         {
+            var technology = _technologyContext.Technologies.FirstOrDefault(x => x.Id == id);
             _technologyContext.Technologies.Remove(technology);
             _technologyContext.SaveChanges();
         }
 
-        public List<Technology> GetTechnologies()
+        public List<TechnologyDto> GetTechnologies()
         {
-            return _technologyContext.Technologies.ToList();
+            var technologyModel = _technologyContext.Technologies.ToList();
+            var technologyDto = new List<TechnologyDto>();
+            foreach(var technology in technologyModel)
+            {
+                technologyDto.Add(new TechnologyDto()
+                {
+                    Id = technology.Id,
+                    TechnologyName = technology.TechnologyName
+                });
+            };
+
+            return technologyDto;
+                
         }
 
-        public Technology GetTechnology(int id)
+        public TechnologyDto GetTechnology(int id)
         {
-            return _technologyContext.Technologies.Where(x => x.Id == id).FirstOrDefault();
+            var technologyModel = _technologyContext.Technologies.Where(x => x.Id == id).FirstOrDefault();
+            if(technologyModel != null)
+            {
+                var technologyDto = new TechnologyDto()
+                {
+                    Id = technologyModel.Id,
+                    TechnologyName = technologyModel.TechnologyName
+                };
+            return technologyDto;
+            }
+            return null;
         }
 
-        public Technology UpdateTechnology(Technology technology)
+        public List<TechnologyDto> UpdateTechnology(int id, TechnologyDto technology)
         {
-            var existingTechnology = _technologyContext.Technologies.Find(technology.Id);
+            var existingTechnology = _technologyContext.Technologies.Find(id);
             if(existingTechnology != null)
             {
+                existingTechnology.Id = technology.Id;
                 existingTechnology.TechnologyName = technology.TechnologyName;
                 _technologyContext.Technologies.Update(existingTechnology);
                 _technologyContext.SaveChanges();
-                return existingTechnology;
+                return GetTechnologies();
             }
             return null;
 

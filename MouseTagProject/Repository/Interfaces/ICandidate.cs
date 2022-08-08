@@ -4,15 +4,15 @@ namespace MouseTagProject.Repository.Interfaces
 {
     public interface ICandidate
     {
-        List<Candidate> GetCandidates();
+        List<CandidateListItemDto> GetCandidates();
 
-        Candidate GetCandidate(int id);
+        CandidateListItemDto GetCandidate(int id);
 
-        void AddCandidate(Candidate candidate);
+        void AddCandidate(AddCandidateDto candidate);
 
-        Candidate UpdateCandidate(Candidate candidate);
+        List<CandidateListItemDto> UpdateCandidate(int id,AddCandidateDto candidate);
 
-        void DeleteCandidate(Candidate candidate);
+        void DeleteCandidate(int id);
 
     }
 }

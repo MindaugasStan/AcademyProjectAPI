@@ -11,5 +11,8 @@ namespace MouseTagProject.Context
         public DbSet<Candidate> Candidates { get; set; }
         public DbSet<Technology> Technologies { get; set; }
         public DbSet<UserDate> UserDates { get; set; }
+        public DbSet<CandidateTechnology> CandidateTechnologies { get; set; }
+
+
     }
 }

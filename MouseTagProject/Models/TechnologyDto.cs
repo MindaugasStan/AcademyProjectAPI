@@ -1,10 +1,8 @@
 ﻿namespace MouseTagProject.Models
 {
-    public class Technology
+    public class TechnologyDto
     {
         public int Id { get; set; }
         public string TechnologyName { get; set; }
-
-        public IEnumerable<CandidateTechnology> Candidates { get; set; }
     }
 }

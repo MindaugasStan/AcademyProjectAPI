@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MouseTagProject.Context;
 
@@ -11,9 +12,10 @@ using MouseTagProject.Context;
 namespace MouseTagProject.Migrations
 {
     [DbContext(typeof(MouseTagProjectContext))]
-    partial class MouseTagProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20220808080830_Second")]
+    partial class Second
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,7 +277,7 @@ namespace MouseTagProject.Migrations
 
                     b.HasIndex("TechnologyId");
 
-                    b.ToTable("CandidateTechnologies");
+                    b.ToTable("CandidateTechnology");
                 });
 
             modelBuilder.Entity("MouseTagProject.Models.Technology", b =>

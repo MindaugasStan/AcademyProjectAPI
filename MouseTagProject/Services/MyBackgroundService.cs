@@ -19,8 +19,8 @@ namespace MouseTagProject.Services
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                await Task.Delay(TimeSpan.FromHours(24)); //Production
-                //await Task.Delay(TimeSpan.FromSeconds(5)); //Testing
+                //await Task.Delay(TimeSpan.FromHours(24)); //Production
+                await Task.Delay(TimeSpan.FromSeconds(5)); //Testing
                 var candidates = _candidate.GetCandidates().Where(c => c.Available == true && c.WillBeContacted > DateTime.Now && c.WillBeContacted < DateTime.Now.AddDays(2)).ToList();
                 if (candidates.Count() != 0)
                 {
