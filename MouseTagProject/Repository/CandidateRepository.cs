@@ -27,6 +27,7 @@ namespace MouseTagProject.Repository
                 Linkedin = candidate.Linkedin,
                 Comment = candidate.Comment,
                 Available = candidate.Available,
+                WillBeContacted = candidate.WillBeContacted,
 
                 Technologies = candidate.TechnologyIds.Select(x => new CandidateTechnology()
                 {
