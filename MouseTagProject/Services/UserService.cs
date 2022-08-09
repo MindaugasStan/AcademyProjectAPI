@@ -27,8 +27,8 @@ namespace MouseTagProject.Services
         {
             var identityUser = new IdentityUser() { UserName = user.Email, Email = user.Email };
 
-            //await _roleManager.CreateAsync(new IdentityRole("Admin"));
-            //await _roleManager.CreateAsync(new IdentityRole("User"));
+            await _roleManager.CreateAsync(new IdentityRole("Admin"));
+            await _roleManager.CreateAsync(new IdentityRole("User"));
 
             var result = await _userManager.CreateAsync(identityUser, user.Password);
 
@@ -106,6 +106,12 @@ namespace MouseTagProject.Services
                 IsSuccess = true,
                 ExpiredDate = token.ValidTo
             };
+        }
+
+        public List<IdentityUser> GetIdentityUsers()
+        {
+            var users = _userManager.Users.ToList();
+            return users;
         }
 
         public async Task<bool> RemoveUserAsync(string email)
