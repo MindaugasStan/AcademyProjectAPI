@@ -42,7 +42,18 @@ namespace MouseTagProject.Controllers
             return BadRequest();
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetIdentityUsers()
+        {
+            var identityUsers = _userService.GetIdentityUsers();
+            List<IdentityUsersDto> users = new List<IdentityUsersDto>();
+            identityUsers.ForEach(x => users.Add(new IdentityUsersDto() { UserName = x.UserName, Email = x.Email }));
+            return Ok(users);
+        }
+
         [HttpPost("Remove/{email}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> RemoveUserAsync(string email)
         {
             var result = await _userService.RemoveUserAsync(email);
@@ -54,9 +65,7 @@ namespace MouseTagProject.Controllers
             return BadRequest();
         }
 
-
-        [HttpGet("usr"), Authorize(AuthenticationSchemes = "Bearer", Roles = "User")]
-        // [HttpGet("usr"), Authorize]
+        [HttpGet("usrtest"), Authorize(Roles = "Admin")]
         public async Task<IActionResult> UserProfile()
         {
             var userId = User.Claims.FirstOrDefault(u => u.Type == "Id").Value;
