@@ -2,7 +2,7 @@
 {
     public class AddCandidateDto
     {
-        public IEnumerable<DateTime> WhenWasContacted { get; set; }
+        public DateTime WhenWasContacted { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Linkedin { get; set; }

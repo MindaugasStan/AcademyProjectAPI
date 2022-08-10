@@ -15,13 +15,14 @@ namespace MouseTagProject.Repository
         }
         public void AddCandidate(AddCandidateDto candidate)
         {
-
+            var dates = new List<UserDate>();
+            dates.Add(new UserDate()
+            {
+                Date = candidate.WhenWasContacted
+            });
             var newCandidate = new Candidate
             {
-                WhenWasContacted = candidate.WhenWasContacted.Select(x => new UserDate()
-                {
-                    Date = x
-                }).ToList(),
+                WhenWasContacted = dates,
                 Name = candidate.Name,
                 Surname = candidate.Surname,
                 Linkedin = candidate.Linkedin,
@@ -34,7 +35,7 @@ namespace MouseTagProject.Repository
                     TechnologyId = x
                 }).ToList()
             };
-
+              
             _candidateContext.Candidates.Add(newCandidate);
             _candidateContext.SaveChanges();
         }
@@ -108,10 +109,10 @@ namespace MouseTagProject.Repository
         {
             var candidateModel = _candidateContext.Candidates.Where(x => x.Id == id).Include(x => x.WhenWasContacted).Include(x => x.Technologies).ThenInclude(x => x.Technology).FirstOrDefault();
             candidateModel.Name = updatedCandidate.Name;
-            candidateModel.WhenWasContacted = updatedCandidate.WhenWasContacted.Select(x => new UserDate()
-            {
-                Date = x.Date
-            }).ToList();
+            //candidateModel.WhenWasContacted = updatedCandidate.WhenWasContacted.Select(x => new UserDate()
+            //{
+            //    Date = x.Date
+            //}).ToList();
             candidateModel.Surname = updatedCandidate.Surname;
             candidateModel.Linkedin = updatedCandidate.Linkedin;
             candidateModel.Comment = updatedCandidate.Comment;
