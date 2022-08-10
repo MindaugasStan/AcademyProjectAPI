@@ -34,7 +34,7 @@ namespace MouseTagProject.Controllers
 
         [HttpPost]
         [Route("api/[controller]")]
-        public IActionResult AddTechnology(TechnologyDto technology)
+        public IActionResult AddTechnology([FromBody] TechnologyDto technology)
         {
             _technology.AddTechnology(technology);
             return Ok(technology);

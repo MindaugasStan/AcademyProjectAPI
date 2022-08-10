@@ -108,11 +108,12 @@ namespace MouseTagProject.Repository
         public List<CandidateListItemDto> UpdateCandidate(int id, AddCandidateDto updatedCandidate)
         {
             var candidateModel = _candidateContext.Candidates.Where(x => x.Id == id).Include(x => x.WhenWasContacted).Include(x => x.Technologies).ThenInclude(x => x.Technology).FirstOrDefault();
+            var dates = new UserDate()
+            {
+                Date = updatedCandidate.WhenWasContacted
+            };
             candidateModel.Name = updatedCandidate.Name;
-            //candidateModel.WhenWasContacted = updatedCandidate.WhenWasContacted.Select(x => new UserDate()
-            //{
-            //    Date = x.Date
-            //}).ToList();
+            candidateModel.WhenWasContacted = candidateModel.WhenWasContacted.Append(dates).ToList();
             candidateModel.Surname = updatedCandidate.Surname;
             candidateModel.Linkedin = updatedCandidate.Linkedin;
             candidateModel.Comment = updatedCandidate.Comment;
@@ -123,6 +124,7 @@ namespace MouseTagProject.Repository
             }).ToList();
             candidateModel.WillBeContacted = updatedCandidate.WillBeContacted;
 
+            _candidateContext.Candidates.Update(candidateModel);
             _candidateContext.SaveChanges();
 
             return GetCandidates();
