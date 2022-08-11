@@ -59,6 +59,7 @@ namespace MouseTagProject.Repository
                     Name = candidateModel.Name,
                     Surname = candidateModel.Surname,
                     Linkedin = candidateModel.Linkedin,
+                    Comment = candidateModel.Comment,
                     Available = candidateModel.Available,
                     Technologies = candidateModel.Technologies.Select(x => new TechnologyDto()
                     {
@@ -87,6 +88,7 @@ namespace MouseTagProject.Repository
                     Name = candidate.Name,
                     Surname = candidate.Surname,
                     Linkedin = candidate.Linkedin,
+                    Comment = candidate.Comment,
                     Available = candidate.Available,
                     Technologies = candidate.Technologies.Select(x => new TechnologyDto()
                     {
