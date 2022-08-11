@@ -55,6 +55,7 @@ builder.Services.AddHostedService<MyBackgroundService>();
 builder.Services.AddScoped<ICandidate, CandidateRepository>();
 builder.Services.AddScoped<ITechnology, TechnologyRepository>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<ImportService>();
 
 builder.Services.AddCors();
 
