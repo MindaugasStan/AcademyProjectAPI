@@ -39,8 +39,7 @@ namespace MouseTagProject.Services
                 candidate.Surname = importCandidate.Surname;
                 candidate.Linkedin = importCandidate.Linkedin;
                 candidate.Comment = importCandidate.Comment;
-                candidate.WhenWasContacted
-                candidate.Available = importCandidate.Open;
+
 
                 var technologies = importCandidate.TechnologyListAsString.Split(new char[] { ' ', ',' });
                 IEnumerable<string> strings = technologies;

@@ -2,7 +2,7 @@
 {
     public class ImportCandidateDto
     {
-        public object DateListAsInt { get; set; }
+        public string DateListAsInt { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Linkedin { get; set; }
