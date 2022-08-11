@@ -17,14 +17,14 @@ namespace MouseTagProject.Controllers
         }
 
         [HttpPost]
-        public IActionResult Import(List<ImportCandidateDto> candidateList)
+        public IActionResult Import(ImportCandidateDto importCandidateDto)
         {
             // List<ImportCandidateDto> candidateList = new List<ImportCandidateDto>();
             // candidateList.Add(new ImportCandidateDto() { DateListAsInt = "54452 45675 45668", Name = "Tomas", Surname = "Kulkauskas", Comment = "Geras program.", Linkedin = "LinkedinUrl", TechnologyListAsString = ".Net Java" });
             // candidateList.Add(new ImportCandidateDto() { DateListAsInt = "45252", Name = "Marius", Surname = "Bernotas", Comment = "Neblogas .net programuotojas", Linkedin = "LinkedinUrl mano", TechnologyListAsString = "PHP JavaScript" });
-            var results = _importService.ImportFromExel(candidateList);
+            // var results = _importService.ImportFromExel(candidateList);
 
-            return Ok(results);
+            return Ok();
         }
     }
 }
