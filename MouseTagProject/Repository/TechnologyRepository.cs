@@ -17,7 +17,6 @@ namespace MouseTagProject.Repository
         {
             var technologyModel = new Technology()
             {
-                Id = technology.Id,
                 TechnologyName = technology.TechnologyName
             };
             _technologyContext.Technologies.Add(technologyModel);
