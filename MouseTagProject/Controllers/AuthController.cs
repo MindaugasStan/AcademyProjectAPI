@@ -19,6 +19,7 @@ namespace MouseTagProject.Controllers
             _userService = userService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("Register")]
         public async Task<IActionResult> Register(UserRegisterDto userDto)
         {
@@ -65,16 +66,15 @@ namespace MouseTagProject.Controllers
             return BadRequest();
         }
 
-        [HttpGet("usrtest"), Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UserProfile()
+        [Authorize, HttpPost("ChangePassword")]
+        public async Task<IActionResult> UserProfile(ChangePaswordDto changePaswordDto)
         {
-            var userId = User.Claims.FirstOrDefault(u => u.Type == "Id").Value;
-
-            var user = await _userService.GetUserProfile(userId);
-
-            return Ok(user);
+            var result = await _userService.ChangePassword(changePaswordDto);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
-
-
     }
 }
