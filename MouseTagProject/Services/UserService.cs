@@ -134,5 +134,14 @@ namespace MouseTagProject.Services
 
             return user;
         }
+
+        public async Task<IdentityResult> ChangePassword(ChangePaswordDto changePaswordDto)
+        {
+            var user = await _userManager.FindByEmailAsync(changePaswordDto.Email);
+
+            var result = await _userManager.ChangePasswordAsync(user, changePaswordDto.OldPassword, changePaswordDto.ConfirmPassword);
+
+            return result;
+        }
     }
 }

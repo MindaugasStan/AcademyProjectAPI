@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MouseTagProject.Models;
 using MouseTagProject.Repository.Interfaces;
 
@@ -14,6 +15,7 @@ namespace MouseTagProject.Controllers
 
         [HttpGet]
         [Route("api/[controller]")]
+        [Authorize]
         public IActionResult GetCandidates()
         {
             return Ok(_candidate.GetCandidates());
@@ -21,19 +23,21 @@ namespace MouseTagProject.Controllers
 
         [HttpGet]
         [Route("api/[controller]/{id}")]
+        [Authorize]
         public IActionResult GetCandidates(int id)
         {
             var candidate = _candidate.GetCandidate(id);
-            if(candidate != null)
+            if (candidate != null)
             {
                 return Ok(candidate);
             }
             return NotFound();
-            
+
         }
 
         [HttpPost]
         [Route("api/[controller]")]
+        [Authorize]
         public IActionResult AddCandidate([FromBody] AddCandidateDto candidate)
         {
             _candidate.AddCandidate(candidate);
@@ -42,6 +46,7 @@ namespace MouseTagProject.Controllers
 
         [HttpDelete]
         [Route("api/[controller]/{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteCandidate(int id)
         {
             //var candidate = _candidate.GetCandidate(id);
@@ -56,6 +61,7 @@ namespace MouseTagProject.Controllers
 
         [HttpPut]
         [Route("api/[controller]/{id}")]
+        [Authorize]
         public IActionResult EditCandidate(int id, [FromBody] AddCandidateDto candidate)
         {
             var existingCandidate = _candidate.GetCandidate(id);
