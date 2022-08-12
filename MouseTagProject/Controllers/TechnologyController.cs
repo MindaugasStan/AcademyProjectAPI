@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MouseTagProject.Models;
 using MouseTagProject.Repository.Interfaces;
 
@@ -12,8 +13,10 @@ namespace MouseTagProject.Controllers
         {
             _technology = technology;
         }
+
         [HttpGet]
         [Route("api/[controller]")]
+        [Authorize]
         public IActionResult GetTechnologies()
         {
             return Ok(_technology.GetTechnologies());
@@ -21,6 +24,7 @@ namespace MouseTagProject.Controllers
 
         [HttpGet]
         [Route("api/[controller]/{id}")]
+        [Authorize]
         public IActionResult GetTechnology(int id)
         {
             var technology = _technology.GetTechnology(id);
@@ -34,6 +38,7 @@ namespace MouseTagProject.Controllers
 
         [HttpPost]
         [Route("api/[controller]")]
+        [Authorize]
         public IActionResult AddTechnology([FromBody] TechnologyDto technology)
         {
             _technology.AddTechnology(technology);
@@ -42,6 +47,7 @@ namespace MouseTagProject.Controllers
 
         [HttpDelete]
         [Route("api/[controller]/{id}")]
+        [Authorize]
         public IActionResult DeleteTechnology(int id)
         {
             var technology = _technology.GetTechnology(id);
@@ -55,6 +61,7 @@ namespace MouseTagProject.Controllers
 
         [HttpPatch]
         [Route("api/[controller]/{id}")]
+        [Authorize]
         public IActionResult EditTechnology(int id, TechnologyDto technology)
         {
             var existingTechnology = _technology.GetTechnology(id);

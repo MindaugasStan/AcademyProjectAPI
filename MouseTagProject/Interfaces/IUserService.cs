@@ -10,5 +10,6 @@ namespace MouseTagProject.Interfaces
         List<IdentityUser> GetIdentityUsers();
         Task<IdentityUser> GetUserProfile(string id);
         Task<bool> RemoveUserAsync(string email);
+        Task<IdentityResult> ChangePassword(ChangePaswordDto changePaswordDto);
     }
 }
