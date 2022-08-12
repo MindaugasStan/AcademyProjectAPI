@@ -12,8 +12,8 @@ using MouseTagProject.Context;
 namespace MouseTagProject.Migrations
 {
     [DbContext(typeof(MouseTagProjectContext))]
-    [Migration("20220808120856_aasd")]
-    partial class aasd
+    [Migration("20220811122900_Migracija")]
+    partial class Migracija
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

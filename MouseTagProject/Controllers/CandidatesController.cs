@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MouseTagProject.Models;
 using MouseTagProject.Repository.Interfaces;
+using Spire.Doc;
+using Spire.Doc.Documents;
+using System.Drawing;
 
 namespace MouseTagProject.Controllers
 {
@@ -44,7 +47,6 @@ namespace MouseTagProject.Controllers
         [Route("api/[controller]/{id}")]
         public IActionResult DeleteCandidate(int id)
         {
-            //var candidate = _candidate.GetCandidate(id);
             var candidate = _candidate.GetCandidate(id);
             if (candidate != null)
             {
@@ -66,5 +68,21 @@ namespace MouseTagProject.Controllers
             }
             return NotFound();
         }
+
+        [HttpGet]
+        [Route("api/[controller]/generate/{id}")]
+        public FileContentResult Generate(int id)
+        {
+            var candidate = _candidate.GetCandidate(id);
+            var fileName = _candidate.GenerateFile(candidate);
+            var data = System.IO.File.ReadAllBytes(fileName + ".docx");
+            System.IO.File.Delete(fileName + ".docx");
+            var result = new FileContentResult(data, "application/octet-stream")
+            {
+                FileDownloadName = fileName + ".docx"
+            };
+            return result;
+        }
+
     }
 }

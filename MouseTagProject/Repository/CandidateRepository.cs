@@ -2,6 +2,9 @@
 using MouseTagProject.Context;
 using MouseTagProject.Models;
 using MouseTagProject.Repository.Interfaces;
+using Spire.Doc;
+using Spire.Doc.Documents;
+using System.Drawing;
 
 namespace MouseTagProject.Repository
 {
@@ -110,12 +113,25 @@ namespace MouseTagProject.Repository
         public List<CandidateListItemDto> UpdateCandidate(int id, AddCandidateDto updatedCandidate)
         {
             var candidateModel = _candidateContext.Candidates.Where(x => x.Id == id).Include(x => x.WhenWasContacted).Include(x => x.Technologies).ThenInclude(x => x.Technology).FirstOrDefault();
-            var dates = new UserDate()
+            var modelDate = candidateModel.WhenWasContacted;
+            bool foundIt = false;
+            var userDates = new UserDate()
             {
                 Date = updatedCandidate.WhenWasContacted
             };
+            foreach(UserDate date in modelDate)
+            {
+                var value = DateTime.Compare(date.Date.Date, userDates.Date.Date);
+                if(value == 0)
+                {
+                    foundIt = true;
+                }    
+            }
             candidateModel.Name = updatedCandidate.Name;
-            candidateModel.WhenWasContacted = candidateModel.WhenWasContacted.Append(dates).ToList();
+            if(!foundIt)
+            {
+                candidateModel.WhenWasContacted = candidateModel.WhenWasContacted.Append(userDates).ToList();
+            }
             candidateModel.Surname = updatedCandidate.Surname;
             candidateModel.Linkedin = updatedCandidate.Linkedin;
             candidateModel.Comment = updatedCandidate.Comment;
@@ -130,6 +146,51 @@ namespace MouseTagProject.Repository
             _candidateContext.SaveChanges();
 
             return GetCandidates();
+        }
+
+        public string GenerateFile(CandidateListItemDto candidate)
+        {
+            var upperNames = candidate.Name.ToUpper() + ' ' + candidate.Surname.ToUpper();
+            var upperFirstLetters = char.ToUpper(candidate.Name[0]) + candidate.Name.Substring(1) + ' ' + char.ToUpper(candidate.Surname[0]) + candidate.Surname.Substring(1);
+            var fileName = "Job_offer_Xplicity_" + char.ToUpper(candidate.Name[0]) + candidate.Name.Substring(1) + "_" + char.ToUpper(candidate.Surname[0]) + candidate.Surname.Substring(1);
+            var date = DateTime.Now;
+            string changedDate = date.ToString("dd MMMM yyyy").Insert(2, GetDaySuffix(date.Day));
+            var filePath = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "Job_offer_Xplicity_ Vardenis Pavardenis.docx");
+            Document doc = new Document("D:\\Job_offer_Xplicity_ Vardenis Pavardenis.docx");
+            TextSelection[] text = doc.FindAllString("Vardenis Pavardenis", false, true);
+            TextSelection[] textDate = doc.FindAllString("9th February 2022", true, true);
+            foreach (TextSelection s in text)
+            {
+                s.GetAsOneRange().CharacterFormat.HighlightColor = Color.White;
+
+            }
+            foreach (TextSelection s in textDate)
+            {
+                s.GetAsOneRange().CharacterFormat.HighlightColor = Color.White;
+            }
+            doc.Replace("Vardenis Pavardenis", upperFirstLetters, true, true);
+            doc.Replace("VARDENIS PAVARDENIS", upperNames, true, true);
+            doc.Replace("9th February 2022", changedDate, true, true); ;
+            doc.SaveToFile(fileName + ".docx");
+            return fileName;
+        }
+        static string GetDaySuffix(int day)
+        {
+            switch (day)
+            {
+                case 1:
+                case 21:
+                case 31:
+                    return "st";
+                case 2:
+                case 22:
+                    return "nd";
+                case 3:
+                case 23:
+                    return "rd";
+                default:
+                    return "th";
+            }
         }
     }
 }

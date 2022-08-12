@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MouseTagProject.Migrations
 {
-    public partial class Init : Migration
+    public partial class Migracija : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -64,6 +64,19 @@ namespace MouseTagProject.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Candidates", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Technologies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TechnologyName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Technologies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -173,32 +186,13 @@ namespace MouseTagProject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Technologies",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TechnologyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CandidateId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Technologies", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Technologies_Candidates_CandidateId",
-                        column: x => x.CandidateId,
-                        principalTable: "Candidates",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserDates",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CandidateId = table.Column<int>(type: "int", nullable: true)
+                    CandidateId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -207,7 +201,34 @@ namespace MouseTagProject.Migrations
                         name: "FK_UserDates_Candidates_CandidateId",
                         column: x => x.CandidateId,
                         principalTable: "Candidates",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CandidateTechnologies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CandidateId = table.Column<int>(type: "int", nullable: false),
+                    TechnologyId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CandidateTechnologies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CandidateTechnologies_Candidates_CandidateId",
+                        column: x => x.CandidateId,
+                        principalTable: "Candidates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CandidateTechnologies_Technologies_TechnologyId",
+                        column: x => x.TechnologyId,
+                        principalTable: "Technologies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -250,9 +271,14 @@ namespace MouseTagProject.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Technologies_CandidateId",
-                table: "Technologies",
+                name: "IX_CandidateTechnologies_CandidateId",
+                table: "CandidateTechnologies",
                 column: "CandidateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CandidateTechnologies_TechnologyId",
+                table: "CandidateTechnologies",
+                column: "TechnologyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserDates_CandidateId",
@@ -278,7 +304,7 @@ namespace MouseTagProject.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Technologies");
+                name: "CandidateTechnologies");
 
             migrationBuilder.DropTable(
                 name: "UserDates");
@@ -288,6 +314,9 @@ namespace MouseTagProject.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Technologies");
 
             migrationBuilder.DropTable(
                 name: "Candidates");

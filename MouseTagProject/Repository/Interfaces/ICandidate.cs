@@ -15,5 +15,7 @@ namespace MouseTagProject.Repository.Interfaces
 
         void DeleteCandidate(int id);
 
+        string GenerateFile(CandidateListItemDto candidate);
+
     }
 }
